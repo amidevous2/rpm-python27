@@ -1,3 +1,5 @@
+%global __arch_install_post echo "no post"
+
 # To Build:
 #
 # sudo yum -y install rpmdevtools && rpmdev-setuptree
