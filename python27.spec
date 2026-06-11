@@ -101,7 +101,7 @@ Source: https://www.python.org/ftp/python/%{version}/Python-%{version}.tgz
 Source1: https://docs.python.org/2/archives/python-%{version}-docs-html.tar.bz2
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-BuildRequires: gcc make expat-devel db4-devel gdbm-devel sqlite-devel readline-devel zlib-devel bzip2-devel openssl-devel
+BuildRequires: gcc make expat-devel libdb-devel gdbm-devel sqlite-devel readline-devel zlib-devel bzip2-devel openssl-devel
 AutoReq: no
 Prefix: %{__prefix}
 Vendor: Sean Reifschneider <jafo-rpms@tummy.com>
