@@ -276,6 +276,7 @@ formats.
 #  BUILD
 ########
 %build
+export QA_RPATHS=$[ 0x0001|0x0010 ]
 echo "Setting for ipv6: %{ipv6}"
 echo "Setting for pymalloc: %{pymalloc}"
 echo "Setting for binsuffix: %{binsuffix}"
@@ -290,6 +291,7 @@ make %{_smp_mflags}
 #  INSTALL
 ##########
 %install
+export QA_RPATHS=$[ 0x0001|0x0010 ]
 #  set the install path
 echo '[install_scripts]' >setup.cfg
 echo 'install_dir='"${RPM_BUILD_ROOT}%{_prefix}/bin" >>setup.cfg
