@@ -296,7 +296,7 @@ echo 'install_dir='"${RPM_BUILD_ROOT}%{_prefix}/bin" >>setup.cfg
 
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{libvers}/lib-dynload
-make prefix=$RPM_BUILD_ROOT%{_prefix} altinstall
+make DESTDIR=$RPM_BUILD_ROOT altinstall
 
 #  REPLACE PATH IN PYDOC
 if [ ! -z "%{binsuffix}" ]
