@@ -1,5 +1,3 @@
-%global __arch_install_post   /usr/lib/rpm/check-buildroot
-
 # To Build:
 #
 # sudo yum -y install rpmdevtools && rpmdev-setuptree
@@ -21,8 +19,6 @@
 %define version 2.7.10
 %define libvers 2.7
 %define release 1
-%define __prefix /usr
-
 
 #  Build tkinter?  "auto" enables it if /usr/bin/wish exists.
 %define config_tkinter yes
@@ -82,7 +78,6 @@
 %define ipv6 %(if [ "%{config_ipv6}" = yes ]; then echo --enable-ipv6; else echo --disable-ipv6; fi)
 %define pymalloc %(if [ "%{config_pymalloc}" = yes ]; then echo --with-pymalloc; else echo --without-pymalloc; fi)
 %define binsuffix %(if [ "%{config_binsuffix}" = none ]; then echo ; else echo "%{config_binsuffix}"; fi)
-%define libdirname lib
 %define sharedlib %(if [ "%{config_sharedlib}" = yes ]; then echo --enable-shared; else echo ; fi)
 %define include_sharedlib %(if [ "%{config_sharedlib}" = yes ]; then echo 1; else echo 0; fi)
 
@@ -105,7 +100,7 @@ Source1: https://docs.python.org/2/archives/python-%{version}-docs-html.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc make expat-devel libdb-devel gdbm-devel sqlite-devel readline-devel zlib-devel bzip2-devel openssl-devel
 AutoReq: no
-Prefix: %{__prefix}
+Prefix: %{_prefix}
 Vendor: Sean Reifschneider <jafo-rpms@tummy.com>
 Packager: Nathan Milford <nathan@milford.io>
 
@@ -285,10 +280,9 @@ echo "Setting for ipv6: %{ipv6}"
 echo "Setting for pymalloc: %{pymalloc}"
 echo "Setting for binsuffix: %{binsuffix}"
 echo "Setting for include_tkinter: %{include_tkinter}"
-echo "Setting for libdirname: %{libdirname}"
 echo "Setting for sharedlib: %{sharedlib}"
 echo "Setting for include_sharedlib: %{include_sharedlib}"
-./configure --enable-unicode=ucs4 --with-signal-module --with-threads %{sharedlib} %{ipv6} %{pymalloc} --prefix=%{__prefix}
+%configure --enable-unicode=ucs4 --with-signal-module --with-threads %{sharedlib} %{ipv6} %{pymalloc}
 make %{_smp_mflags}
 
 
@@ -298,64 +292,64 @@ make %{_smp_mflags}
 %install
 #  set the install path
 echo '[install_scripts]' >setup.cfg
-echo 'install_dir='"${RPM_BUILD_ROOT}%{__prefix}/bin" >>setup.cfg
+echo 'install_dir='"${RPM_BUILD_ROOT}%{_prefix}/bin" >>setup.cfg
 
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{__prefix}/%{libdirname}/python%{libvers}/lib-dynload
-make prefix=$RPM_BUILD_ROOT%{__prefix} altinstall
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{libvers}/lib-dynload
+make prefix=$RPM_BUILD_ROOT%{_prefix} altinstall
 
 #  REPLACE PATH IN PYDOC
 if [ ! -z "%{binsuffix}" ]
 then
    (
-      cd $RPM_BUILD_ROOT%{__prefix}/bin
+      cd $RPM_BUILD_ROOT%{_prefix}/bin
       mv pydoc pydoc.old
-      sed 's|#!.*|#!%{__prefix}/bin/python'%{binsuffix}'|' \
+      sed 's|#!.*|#!%{_prefix}/bin/python'%{binsuffix}'|' \
             pydoc.old >pydoc
       chmod 755 pydoc
       rm -f pydoc.old
-      sed -i -e 's|#!.*|#!%{__prefix}/bin/python'%{binsuffix}'|' python%{libvers}-config
+      sed -i -e 's|#!.*|#!%{_prefix}/bin/python'%{binsuffix}'|' python%{libvers}-config
    )
 fi
 
 #  add the binsuffix
 if [ ! -z "%{binsuffix}" ]
 then
-   ( cd $RPM_BUILD_ROOT%{__prefix}/bin;
+   ( cd $RPM_BUILD_ROOT%{_prefix}/bin;
       for file in 2to3  pydoc  python-config  idle smtpd.py; do [ -f "$file" ] && mv "$file" "$file"%{binsuffix}; done;)
 fi
 
 # Fix permissions
-chmod 644 $RPM_BUILD_ROOT%{__prefix}/%{libdirname}/libpython%{libvers}*
+chmod 644 $RPM_BUILD_ROOT%{_libdir}/libpython%{libvers}*
 
 ########
 #  Tools
 %if %{include_tools}
-cp -a Tools $RPM_BUILD_ROOT%{__prefix}/%{libdirname}/python%{libvers}
-install -D -m 644 Tools/gdb/libpython.py $RPM_BUILD_ROOT%{__prefix}/%{libdirname}/debug/usr/bin/python%{libvers}.debug-gdb.py
+cp -a Tools $RPM_BUILD_ROOT%{_libdir}/python%{libvers}
+install -D -m 644 Tools/gdb/libpython.py $RPM_BUILD_ROOT%{_libdir}/debug/usr/bin/python%{libvers}.debug-gdb.py
 echo "/usr/lib/debug/usr/bin/python2.7.debug-gdb.py" >> debugfiles.list
 %endif
 
 #  MAKE FILE LISTS
 rm -f mainpkg.files
-find "$RPM_BUILD_ROOT""%{__prefix}"/%{libdirname}/python%{libvers} -type f |
+find "$RPM_BUILD_ROOT""%{_libdir}/python%{libvers} -type f |
         sed "s|^${RPM_BUILD_ROOT}|/|" | grep -v -e '_tkinter.so$' >mainpkg.files
-find "$RPM_BUILD_ROOT""%{__prefix}"/bin -type f -o -type l |
+find "$RPM_BUILD_ROOT""%{_prefix}"/bin -type f -o -type l |
         sed "s|^${RPM_BUILD_ROOT}|/|" |
         grep -v -e '/bin/2to3%{binsuffix}$' |
         grep -v -e '/bin/pydoc%{binsuffix}$' |
         grep -v -e '/bin/smtpd.py%{binsuffix}$' |
         grep -v -e '/bin/idle%{binsuffix}$' >>mainpkg.files
-echo %{__prefix}/include/python%{libvers}/pyconfig.h >> mainpkg.files
+echo %{_prefix}/include/python%{libvers}/pyconfig.h >> mainpkg.files
 
 %if %{include_tools}
 rm -f tools.files
-echo "%{__prefix}"/%{libdirname}/python%{libvers}/Tools >>tools.files
-echo "%{__prefix}"/%{libdirname}/python%{libvers}/lib2to3/tests >>tools.files
-echo "%{__prefix}"/bin/2to3%{binsuffix} >>tools.files
-echo "%{__prefix}"/bin/pydoc%{binsuffix} >>tools.files
-echo "%{__prefix}"/bin/smtpd.py%{binsuffix} >>tools.files
-echo "%{__prefix}"/bin/idle%{binsuffix} >>tools.files
+echo "%{_libdir}/python%{libvers}/Tools >>tools.files
+echo "%{_libdir}/python%{libvers}/lib2to3/tests >>tools.files
+echo "%{_prefix}"/bin/2to3%{binsuffix} >>tools.files
+echo "%{_prefix}"/bin/pydoc%{binsuffix} >>tools.files
+echo "%{_prefix}"/bin/smtpd.py%{binsuffix} >>tools.files
+echo "%{_prefix}"/bin/idle%{binsuffix} >>tools.files
 %endif
 
 ######
@@ -374,7 +368,7 @@ find "$RPM_BUILD_ROOT" -type f -print0 |
       xargs -0 grep -l /usr/local/bin/python | while read file
 do
    FIXFILE="$file"
-   sed 's|^#!.*python|#!%{__prefix}/bin/python'"%{binsuffix}"'|' \
+   sed 's|^#!.*python|#!%{_prefix}/bin/python'"%{binsuffix}"'|' \
          "$FIXFILE" >/tmp/fix-python-path.$$
    cat /tmp/fix-python-path.$$ >"$FIXFILE"
    rm -f /tmp/fix-python-path.$$
@@ -396,43 +390,43 @@ rm -f mainpkg.files tools.files
 %defattr(-,root,root)
 %doc Misc/README Misc/cheatsheet Misc/Porting
 %doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
-%doc %{__prefix}/share/man/man1/python2.7.1.gz
+%doc %{_prefix}/share/man/man1/python2.7.1.gz
 
-%{__prefix}/%{libdirname}/python%{libvers}/lib-dynload/
-%{__prefix}/%{libdirname}/python%{libvers}/lib2to3/tests/data/
-%{__prefix}/%{libdirname}/pkgconfig/python-%{libvers}.pc
+%{_libdir}/python%{libvers}/lib-dynload/
+%{_libdir}/python%{libvers}/lib2to3/tests/data/
+%{_libdir}/pkgconfig/python-%{libvers}.pc
 
-%attr(755,root,root) %dir %{__prefix}/include/python%{libvers}
-%attr(755,root,root) %dir %{__prefix}/%{libdirname}/python%{libvers}/
-%attr(755,root,root) %dir %{__prefix}/%{libdirname}/python%{libvers}/
+%attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
+%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
+%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
 
 %if %{include_sharedlib}
-%{__prefix}/%{libdirname}/libpython*
+%{_libdir}/libpython*
 %else
-%{__prefix}/%{libdirname}/libpython*.a
+%{_libdir}/libpython*.a
 %endif
-#%{__prefix}/share/man/man1/python2.7.1.gz
+#%{_prefix}/share/man/man1/python2.7.1.gz
 
 %files devel
 %defattr(-,root,root)
-%{__prefix}/include/python%{libvers}/*.h
-%{__prefix}/%{libdirname}/python%{libvers}/config
+%{_prefix}/include/python%{libvers}/*.h
+%{_libdir}/python%{libvers}/config
 
 %if %{include_tools}
 %files -f tools.files tools
 %defattr(-,root,root)
 %else
-%exclude %{__prefix}/bin/2to3%{binsuffix}
-%exclude %{__prefix}/bin/pydoc%{binsuffix}
-%exclude %{__prefix}/bin/smtpd.py%{binsuffix}
-%exclude %{__prefix}/bin/idle%{binsuffix}
+%exclude %{_prefix}/bin/2to3%{binsuffix}
+%exclude %{_prefix}/bin/pydoc%{binsuffix}
+%exclude %{_prefix}/bin/smtpd.py%{binsuffix}
+%exclude %{_prefix}/bin/idle%{binsuffix}
 %endif
 
 %if %{include_tkinter}
 %files tkinter
 %defattr(-,root,root)
-%{__prefix}/%{libdirname}/python%{libvers}/lib-tk
-%{__prefix}/%{libdirname}/python%{libvers}/lib-dynload/_tkinter.so*
+%{_libdir}/python%{libvers}/lib-tk
+%{_libdir}/python%{libvers}/lib-dynload/_tkinter.so*
 %endif
 
 %if %{include_docs}
