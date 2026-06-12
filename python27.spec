@@ -32,8 +32,8 @@
 
 
 #  Include tools?
-%define config_include_tools no
 %define config_include_tools yes
+%define config_include_tools no
 
 
 #  Enable IPV6?
