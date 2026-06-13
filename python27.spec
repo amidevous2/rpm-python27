@@ -329,31 +329,31 @@ rm -f mainpkg.files tools.files
 ########
 #  FILES
 ########
-%files -f mainpkg.files
+%files
 %defattr(-,root,root)
-%doc Misc/README Misc/cheatsheet Misc/Porting
-%doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
-%doc %{_prefix}/share/man/man1/python2.7.1.gz
+#%doc Misc/README Misc/cheatsheet Misc/Porting
+#%doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
+#%doc %{_prefix}/share/man/man1/python2.7.1.gz
 
-%{_libdir}/python%{libvers}/lib-dynload/
-%{_libdir}/python%{libvers}/lib2to3/tests/data/
-%{_libdir}/pkgconfig/python-%{libvers}.pc
+#%{_libdir}/python%{libvers}/lib-dynload/
+#%{_libdir}/python%{libvers}/lib2to3/tests/data/
+#%{_libdir}/pkgconfig/python-%{libvers}.pc
 
-%attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
-%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
-%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
+#%attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
+#%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
+#%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
 
-%if %{include_sharedlib}
-%{_libdir}/libpython*
-%else
-%{_libdir}/libpython*.a
-%endif
+#%if %{include_sharedlib}
+#%{_libdir}/libpython*
+#%else
+#%{_libdir}/libpython*.a
+#%endif
 #%{_prefix}/share/man/man1/python2.7.1.gz
 
 %files devel
 %defattr(-,root,root)
-%{_prefix}/include/python%{libvers}/*.h
-%{_libdir}/python%{libvers}/config
+#%{_prefix}/include/python%{libvers}/*.h
+#%{_libdir}/python%{libvers}/config
 
 %if %{include_tools}
 %files -f tools.files tools
@@ -368,12 +368,12 @@ rm -f mainpkg.files tools.files
 %if %{include_tkinter}
 %files tkinter
 %defattr(-,root,root)
-%{_libdir}/python%{libvers}/lib-tk
-%{_libdir}/python%{libvers}/lib-dynload/_tkinter.so*
+#%{_libdir}/python%{libvers}/lib-tk
+#%{_libdir}/python%{libvers}/lib-dynload/_tkinter.so*
 %endif
 
 %if %{include_docs}
 %files docs
 %defattr(-,root,root)
-%{config_htmldir}/*
+#%{config_htmldir}/*
 %endif
