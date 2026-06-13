@@ -7,6 +7,23 @@
 # QA_RPATHS=$[ 0x0001|0x0010 ] rpmbuild -bb ~/rpmbuild/SPECS/python27.spec
 
 
+
+# no debug infos with:
+%global debug_package %{nil}
+
+# disable check-buildroot (normally /usr/lib/rpm/check-buildroot) with:
+%define __arch_install_post %{nil}
+
+%define __os_install_post %{nil}
+
+# disable automatic dependency and provides generation with:
+%define __find_provides %{nil} 
+%define __find_requires %{nil} 
+%define _use_internal_dependency_generator 0
+Autoprov: 0
+Autoreq: 0
+
+
 ##########################
 #  User-modifiable configs
 ##########################
