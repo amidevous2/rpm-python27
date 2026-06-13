@@ -249,12 +249,12 @@ rm -f mainpkg.files tools.files
 ########
 %files
 %defattr(-,root,root)
-#%doc Misc/README Misc/cheatsheet Misc/Porting
-#%doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
-#%doc %{_prefix}/share/man/man1/python2.7.1.gz
+#%#doc Misc/README Misc/cheatsheet Misc/Porting
+#%#doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
+#%#doc %{_prefix}/share/man/man1/python2.7.1.gz
 
 %{_libdir}/python%{libvers}/lib-dynload/
-#%{_libdir}/python%{libvers}/lib2to3/tests/data/
+#%#{_libdir}/python%{libvers}/lib2to3/tests/data/
 %{_libdir}/pkgconfig/python-%{libvers}.pc
 
 %attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
