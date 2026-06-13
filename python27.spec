@@ -233,6 +233,12 @@ fi
 if [ -f "$RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py" ]; then
    mv $RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py $RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py%{binsuffix}
 fi
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/share/man/man1/python2.7.1" ]; then
+   rm -rf $RPM_BUILD_ROOT%{_prefix}/share/man/man1/python2.7.1
+fi
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/share/man/man1/python2.7.1.gz" ]; then
+   rm -rf $RPM_BUILD_ROOT%{_prefix}/share/man/man1/python2.7.1.gz
+fi   
 
 
 
@@ -252,8 +258,10 @@ rm -f mainpkg.files tools.files
 #%#doc Misc/README Misc/cheatsheet Misc/Porting
 #%#doc LICENSE Misc/ACKS Misc/HISTORY Misc/NEWS
 #%#doc %{_prefix}/share/man/man1/python2.7.1.gz
+%{_bindir}/python%{libvers}
 
 %{_libdir}/python%{libvers}/lib-dynload/
+%{_prefix}/lib/python2.7/*
 #%#{_libdir}/python%{libvers}/lib2to3/tests/data/
 %{_libdir}/pkgconfig/python-%{libvers}.pc
 
@@ -272,6 +280,7 @@ rm -f mainpkg.files tools.files
 %defattr(-,root,root)
 %{_prefix}/include/python%{libvers}/*.h
 %{_libdir}/python%{libvers}/config
+%{_bindir}/python%{libvers}-config
 
 %if %{include_tools}
 %files -f tools.files tools
