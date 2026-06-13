@@ -315,6 +315,20 @@ echo 'install_dir='"${RPM_BUILD_ROOT}%{_prefix}/bin" >>setup.cfg
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{libvers}/lib-dynload
 make DESTDIR=$RPM_BUILD_ROOT altinstall
 
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/bin/2to3" ]; then
+   mv $RPM_BUILD_ROOT%{_prefix}/bin/2to3 $RPM_BUILD_ROOT%{_prefix}/bin/2to3%{binsuffix}
+fi
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/bin/idle" ]; then
+   mv $RPM_BUILD_ROOT%{_prefix}/bin/idle $RPM_BUILD_ROOT%{_prefix}/bin/2to3%{binsuffix}
+fi
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/bin/pydoc" ]; then
+   mv $RPM_BUILD_ROOT%{_prefix}/bin/pydoc $RPM_BUILD_ROOT%{_prefix}/bin/pydoc%{binsuffix}
+fi
+if [ -f "$RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py" ]; then
+   mv $RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py $RPM_BUILD_ROOT%{_prefix}/bin/smtpd.py%{binsuffix}
+fi
+
+
 
 ########
 #  CLEAN
@@ -334,28 +348,32 @@ rm -f mainpkg.files tools.files
 #%doc %{_prefix}/share/man/man1/python2.7.1.gz
 
 %{_libdir}/python%{libvers}/lib-dynload/
-#%{_libdir}/python%{libvers}/lib2to3/tests/data/
-#%{_libdir}/pkgconfig/python-%{libvers}.pc
+%{_libdir}/python%{libvers}/lib2to3/tests/data/
+%{_libdir}/pkgconfig/python-%{libvers}.pc
 
-#%attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
-#%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
-#%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
+%attr(755,root,root) %dir %{_prefix}/include/python%{libvers}
+%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
+%attr(755,root,root) %dir %{_libdir}/python%{libvers}/
 
-#%if %{include_sharedlib}
-#%{_libdir}/libpython*
-#%else
-#%{_libdir}/libpython*.a
-#%endif
-#%{_prefix}/share/man/man1/python2.7.1.gz
+%if %{include_sharedlib}
+%{_libdir}/libpython*
+%else
+%{_libdir}/libpython*.a
+%endif
+%{_prefix}/share/man/man1/python2.7.1.gz
 
 %files devel
 %defattr(-,root,root)
-#%{_prefix}/include/python%{libvers}/*.h
-#%{_libdir}/python%{libvers}/config
+%{_prefix}/include/python%{libvers}/*.h
+%{_libdir}/python%{libvers}/config
 
 %if %{include_tools}
 %files -f tools.files tools
 %defattr(-,root,root)
+%{_prefix}/bin/2to3%{binsuffix}
+%{_prefix}/bin/pydoc%{binsuffix}
+%{_prefix}/bin/smtpd.py%{binsuffix}
+%{_prefix}/bin/idle%{binsuffix}
 %else
 %exclude %{_prefix}/bin/2to3%{binsuffix}
 %exclude %{_prefix}/bin/pydoc%{binsuffix}
