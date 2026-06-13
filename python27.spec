@@ -1,10 +1,10 @@
 # To Build:
 #
-# sudo yum -y install rpmdevtools && rpmdev-setuptree
-# sudo yum -y install tk-devel tcl-devel expat-devel db4-devel gdbm-devel sqlite-devel bzip2-devel openssl-devel ncurses-devel readline-devel
-# wget https://raw.github.com/nmilford/rpm-python27/master/python27.spec -O ~/rpmbuild/SPECS/python27.spec
-# wget https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz -O ~/rpmbuild/SOURCES/Python-2.7.10.tgz
-# QA_RPATHS=$[ 0x0001|0x0010 ] rpmbuild -bb ~/rpmbuild/SPECS/python27.spec
+# sudo sudo -y install rpmdevtools && rpmdev-setuptree
+# wget https://github.com/amidevous2/rpm-python27/raw/refs/heads/master/python27.spec -O $(rpm --eval '%{_specdir}')/python27.spec
+# sudo dnf -y build-dep ~/rpmbuild/SPECS/python27.spec
+# spectool --get-files --sourcedir $(rpm --eval '%{_specdir}')/python27.spec
+# rpmbuild -ba $(rpm --eval '%{_specdir}')/python27.spec
 
 
 
@@ -293,7 +293,6 @@ formats.
 #  BUILD
 ########
 %build
-export QA_RPATHS=$[ 0x0001|0x0010 ]
 echo "Setting for ipv6: %{ipv6}"
 echo "Setting for pymalloc: %{pymalloc}"
 echo "Setting for binsuffix: %{binsuffix}"
@@ -308,7 +307,6 @@ make %{_smp_mflags}
 #  INSTALL
 ##########
 %install
-export QA_RPATHS=$[ 0x0001|0x0010 ]
 #  set the install path
 echo '[install_scripts]' >setup.cfg
 echo 'install_dir='"${RPM_BUILD_ROOT}%{_prefix}/bin" >>setup.cfg
