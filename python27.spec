@@ -33,7 +33,7 @@ Autoreq: 0
 
 #  Define Constants
 %define name python27
-%define version 2.7.10
+%define version 2.7.18
 %define libvers 2.7
 %define release 1
 
