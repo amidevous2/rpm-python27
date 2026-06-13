@@ -266,7 +266,7 @@ rm -f mainpkg.files tools.files
 %else
 %{_libdir}/libpython*.a
 %endif
-%{_prefix}/share/man/man1/python2.7.1.gz
+#%#{_prefix}/share/man/man1/python2.7.1.gz
 
 %files devel
 %defattr(-,root,root)
