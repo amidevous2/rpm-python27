@@ -1,5 +1,5 @@
 # To Build:
-#
+##
 # sudo dnf -y install rpmdevtools && rpmdev-setuptree
 # wget https://github.com/amidevous2/rpm-python27/raw/refs/heads/master/python27.spec -O $(rpm --eval '%{_specdir}')/python27.spec
 # sudo dnf -y build-dep ~/rpmbuild/SPECS/python27.spec
