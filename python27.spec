@@ -188,100 +188,6 @@ Documentation relating to the Python programming language in HTML and info
 formats.
 %endif
 
-%changelog
-* Sat Sep 5 2015 thinker0 <thinker0@gmail.com> [2.7.10-1]
-- Updated to 2.7.10
-
-* Mon Apr 14 2014 Cornfeedhobo <cornfeedhobo@fuzzlabs.org> [2.7.6-1]
-- Updated to 2.7.6
-- Fixed abi dependancy notice
-
-* Fri Jun 28 2012 Nathan Milford <nathan@milford.io> [2.7.5-1]
-- Updated to 2.7.5.
-
-* Wed Jan 04 2012 Nathan Milford <nathan@milford.io> [2.7.2-milford]
-- Updated to 2.7.2.
-
-* Mon Dec 20 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.4-2pydotorg]
-- Changing the idle wrapper so that it passes arguments to idle.
-
-* Tue Oct 19 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.4b1-1pydotorg]
-- Updating to 2.4.
-
-* Thu Jul 22 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.4-3pydotorg]
-- Paul Tiemann fixes for %{prefix}.
-- Adding permission changes for directory as suggested by reimeika.ca
-- Adding code to detect when it should be using lib64.
-- Adding a define for the location of /var/www/html for docs.
-
-* Thu May 27 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.4-2pydotorg]
-- Including changes from Ian Holsman to build under Red Hat 7.3.
-- Fixing some problems with the /usr/local path change.
-
-* Sat Mar 27 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.2-3pydotorg]
-- Being more agressive about finding the paths to fix for
-  #!/usr/local/bin/python.
-
-* Sat Feb 07 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.3-2pydotorg]
-- Adding code to remove "#!/usr/local/bin/python" from particular files and
-  causing the RPM build to terminate if there are any unexpected files
-  which have that line in them.
-
-* Mon Oct 13 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.2-1pydotorg]
-- Adding code to detect wether documentation is available to build.
-
-* Fri Sep 19 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.1-1pydotorg]
-- Updating to the 2.3.1 release.
-
-* Mon Feb 24 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3b1-1pydotorg]
-- Updating to 2.3b1 release.
-
-* Mon Feb 17 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3a1-1]
-- Updating to 2.3 release.
-
-* Sun Dec 23 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2-2]
-- Added -docs package.
-- Added "auto" config_tkinter setting which only enables tk if
-  /usr/bin/wish exists.
-
-* Sat Dec 22 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2-1]
-- Updated to 2.2.
-- Changed the extension to "2" from "2.2".
-
-* Tue Nov 18 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2c1-1]
-- Updated to 2.2c1.
-
-* Thu Nov  1 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2b1-3]
-- Changed the way the sed for fixing the #! in pydoc works.
-
-* Wed Oct  24 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2b1-2]
-- Fixed missing "email" package, thanks to anonymous report on sourceforge.
-- Fixed missing "compiler" package.
-
-* Mon Oct 22 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2b1-1]
-- Updated to 2.2b1.
-
-* Mon Oct  9 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2a4-4]
-- otto@balinor.mat.unimi.it mentioned that the license file is missing.
-
-* Sun Sep 30 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2a4-3]
-- Ignacio Vazquez-Abrams pointed out that I had a spruious double-quote in
-  the spec files.  Thanks.
-
-* Wed Jul 25 2001 Sean Reifschneider <jafo-rpms@tummy.com>
-[Release 2.2a1-1]
-- Updated to 2.2a1 release.
-- Changed idle and pydoc to use binsuffix macro
-
-
 #######
 #  PREP
 #######
@@ -384,12 +290,109 @@ rm -f mainpkg.files tools.files
 %if %{include_tkinter}
 %files tkinter
 %defattr(-,root,root)
-#%{_libdir}/python%{libvers}/lib-tk
-#%{_libdir}/python%{libvers}/lib-dynload/_tkinter.so*
+%{_libdir}/python%{libvers}/lib-tk
+%{_libdir}/python%{libvers}/lib-dynload/_tkinter.so*
 %endif
 
 %if %{include_docs}
 %files docs
 %defattr(-,root,root)
-#%{config_htmldir}/*
+%{config_htmldir}/*
 %endif
+
+
+
+
+
+%changelog
+* Sat Sep 5 2015 thinker0 <thinker0@gmail.com> [2.7.10-1]
+- Updated to 2.7.10
+
+* Mon Apr 14 2014 Cornfeedhobo <cornfeedhobo@fuzzlabs.org> [2.7.6-1]
+- Updated to 2.7.6
+- Fixed abi dependancy notice
+
+* Fri Jun 28 2012 Nathan Milford <nathan@milford.io> [2.7.5-1]
+- Updated to 2.7.5.
+
+* Wed Jan 04 2012 Nathan Milford <nathan@milford.io> [2.7.2-milford]
+- Updated to 2.7.2.
+
+* Mon Dec 20 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.4-2pydotorg]
+- Changing the idle wrapper so that it passes arguments to idle.
+
+* Tue Oct 19 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.4b1-1pydotorg]
+- Updating to 2.4.
+
+* Thu Jul 22 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.4-3pydotorg]
+- Paul Tiemann fixes for %{prefix}.
+- Adding permission changes for directory as suggested by reimeika.ca
+- Adding code to detect when it should be using lib64.
+- Adding a define for the location of /var/www/html for docs.
+
+* Thu May 27 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.4-2pydotorg]
+- Including changes from Ian Holsman to build under Red Hat 7.3.
+- Fixing some problems with the /usr/local path change.
+
+* Sat Mar 27 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.2-3pydotorg]
+- Being more agressive about finding the paths to fix for
+  #!/usr/local/bin/python.
+
+* Sat Feb 07 2004 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.3-2pydotorg]
+- Adding code to remove "#!/usr/local/bin/python" from particular files and
+  causing the RPM build to terminate if there are any unexpected files
+  which have that line in them.
+
+* Mon Oct 13 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.2-1pydotorg]
+- Adding code to detect wether documentation is available to build.
+
+* Fri Sep 19 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3.1-1pydotorg]
+- Updating to the 2.3.1 release.
+
+* Mon Feb 24 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3b1-1pydotorg]
+- Updating to 2.3b1 release.
+
+* Mon Feb 17 2003 Sean Reifschneider <jafo-rpms@tummy.com> [2.3a1-1]
+- Updating to 2.3 release.
+
+* Sun Dec 23 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2-2]
+- Added -docs package.
+- Added "auto" config_tkinter setting which only enables tk if
+  /usr/bin/wish exists.
+
+* Sat Dec 22 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2-1]
+- Updated to 2.2.
+- Changed the extension to "2" from "2.2".
+
+* Tue Nov 18 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2c1-1]
+- Updated to 2.2c1.
+
+* Thu Nov  1 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2b1-3]
+- Changed the way the sed for fixing the #! in pydoc works.
+
+* Wed Oct  24 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2b1-2]
+- Fixed missing "email" package, thanks to anonymous report on sourceforge.
+- Fixed missing "compiler" package.
+
+* Mon Oct 22 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2b1-1]
+- Updated to 2.2b1.
+
+* Mon Oct  9 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2a4-4]
+- otto@balinor.mat.unimi.it mentioned that the license file is missing.
+
+* Sun Sep 30 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2a4-3]
+- Ignacio Vazquez-Abrams pointed out that I had a spruious double-quote in
+  the spec files.  Thanks.
+
+* Wed Jul 25 2001 Sean Reifschneider <jafo-rpms@tummy.com>
+[Release 2.2a1-1]
+- Updated to 2.2a1 release.
+- Changed idle and pydoc to use binsuffix macro
